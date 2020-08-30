@@ -9,7 +9,7 @@ I create one Google Apps Scripts "Project" that I called "Habitica" and dumped a
 
 
 - Utility.gs : A collection of utility functions I use in some of the other scripts.
-- Player.gs : Defines a PLAYER object that has functions that can be called from other scripts.  This basically hids some of the critical API user and token values in a closure.
+- Player.gs : Defines a PLAYER object that has functions that can be called from other scripts.  This basically hides some of the critical API user and token values in a closure.
 - BuyArmorie.gs : Provides a function that can be scheduled periodically to see if a number of Armorie can be purchased. (Depends on the Utility.gs and Player.gs scripts)
 - PartyBuff.gs : Provides a function that can be scheduled periodically to cast buffs for the party up to the available amount of mana. (Depends on the Utility.gs and Player.gs scripts)
 
