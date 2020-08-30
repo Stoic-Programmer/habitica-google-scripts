@@ -1,4 +1,6 @@
 /**
+    Copyright 2020 by Nicholas R Ustick
+    
     Purchase a number of Armoire based upon the
     amount of gold the player has on hand.
     The script can reserve a certain amount of gold

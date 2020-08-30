@@ -1,4 +1,9 @@
 /**
+  Copyright 2020 by Nicholas R Ustick
+*/
+
+
+/**
   Ensures the calling rate it limited to the number of resuests
   that Habitica requires.  Habitical will error if requests are made faster
   than 30 calls per minute.
