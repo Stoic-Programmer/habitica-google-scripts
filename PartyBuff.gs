@@ -1,3 +1,11 @@
+/**
+  Copyright 2020 by Nicholas R Ustick
+  
+  Buff up the party.  Goal is to add a bit of smarts such that in the event the player rerolls with an "Orb of Rebirth" this script
+  will change to use the appropriate set of skills based upon class level and mana available.
+  
+  WIP
+*/
 function schedulePartyBuff() {
 /**
   Skills found on:  https://habitica.fandom.com/wiki/Skills
