@@ -1,4 +1,6 @@
 /**
+  Copyright 2020 by Nicholas R Ustick
+  
   Define a user of Habitica.
 */
 const PLAYER = (function() {
