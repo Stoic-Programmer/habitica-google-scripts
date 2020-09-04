@@ -8,8 +8,8 @@
 */
 function scheduleBulkBuyArmorie() {
   const DELAY = rateLimit(2100);
-  const RESERVE = 20000;
-  const MAX_ITEMS = 50;
+  const RESERVE = 30000;
+  const MAX_ITEMS = 200;
   const PRICE = 100;
 
   let gold = Math.floor(PLAYER.stats().gp);
