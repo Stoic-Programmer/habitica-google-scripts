@@ -14,15 +14,13 @@ function scheduleBulkBuyArmorie() {
 
   let gold = Math.floor(PLAYER.stats().gp);
   let amount = gold - RESERVE;
-  let items = scaleToFiveMinutes(numberBasedOnCost(amount, PRICE), DELAY);
-  
-  if (items > MAX_ITEMS) {
-    items = MAX_ITEMS;
-  }
+
+  let items = scaleToFiveMinutes(DELAY, numberBasedOnCost(PRICE, amount));
+  items = limitTo(MAX_ITEMS, items);
   
   if (items > 0) {
     Logger.log("Calculated items to buy. required reserve="+RESERVE+", player gold="+gold+", itemCount="+items);
-    repeat(function(){PLAYER.buyArmoire();}, items, DELAY);
+    repeat(DELAY, items, function(){PLAYER.buyArmoire();});
   }
   else {
      Logger.log("Not enough reserve to buy.  reserve="+RESERVE+", player gold="+gold);

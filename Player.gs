@@ -4,7 +4,7 @@
   Define a user of Habitica.
 */
 const PLAYER = (function() {
-  const scriptProperties = PropertiesService.getScriptProperties(); // Const objects can have properties changed
+  const scriptProperties = PropertiesService.getScriptProperties();
   const USER_ID = scriptProperties.getProperty("apiUser");
   const API_TOKEN = scriptProperties.getProperty("apiToken"); // Do not share this to anyone
 
