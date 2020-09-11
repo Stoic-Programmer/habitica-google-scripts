@@ -20,7 +20,9 @@ function scheduleBulkBuyArmorie() {
   
   if (items > 0) {
     Logger.log("Calculated items to buy. required reserve="+RESERVE+", player gold="+gold+", itemCount="+items);
-    repeat(DELAY, items, function(){PLAYER.buyArmoire();});
+    const purchaseArmorie  = function(){PLAYER.buyArmoire();};
+    const purchaseThenDelay = executeThenDelay(DELAY, purchaseArmorie);
+    repeat(items, purchaseThenDelay);
   }
   else {
      Logger.log("Not enough reserve to buy.  reserve="+RESERVE+", player gold="+gold);
