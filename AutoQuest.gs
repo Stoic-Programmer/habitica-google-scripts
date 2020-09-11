@@ -5,8 +5,7 @@ const scriptProperties = PropertiesService.getScriptProperties(); // Const objec
 /* ========================================== */
 const USER_ID = scriptProperties.getProperty("apiUser");
 const API_TOKEN = scriptProperties.getProperty("apiToken"); // Do not share this to anyone
-
-const WEB_APP_URL = "https://script.google.com/macros/s/***REMOVED***/exec";
+const WEB_APP_URL = scriptProperties.getProperty("appURL"); ;
 
 /* ========================================== */
 /* [Users] Required customizations to fill in */
@@ -16,7 +15,7 @@ const WEB_APP_URL = "https://script.google.com/macros/s/***REMOVED***/exec";
 /* [Users] Optional customizations to fill in */
 /* ========================================== */
 const ENABLE_AUTO_ACCEPT_QUESTS = 1;
-const ENABLE_QUEST_COMPLETED_NOTIFICATION = 0;
+const ENABLE_QUEST_COMPLETED_NOTIFICATION = 1;
 
 /* ========================================== */
 /* [Users] Do not edit code below this line   */
