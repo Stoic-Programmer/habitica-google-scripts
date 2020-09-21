@@ -1,4 +1,4 @@
-const scriptProperties = PropertiesService.getScriptProperties(); // Const objects can have properties changed
+const scriptProperties = PropertiesService.getScriptProperties(); 
 
 /* ========================================== */
 /* [Users] Required script data to fill in    */
