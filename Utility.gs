@@ -19,14 +19,14 @@ function scaleToFiveMinutes(delay, ntimes) {
   const FIVE_MINUTES = 4 * 60 * 1000; //milliseconds in  four minutes to scale it in a bit
   let n = ntimes;
   let estRunTime = n * delay;
-  if (estRunTime > FIVE_MINUTES) {
+  if (FIVE_MINUTES < estRunTime) {
     n = Math.floor(FIVE_MINUTES / delay) - 1;
   }
   return n;
 }
 
 function limitTo(max, value) {
-  if (value > max) {
+  if (max && (max < value)) {
     return max
   }
   return value;  
@@ -34,22 +34,22 @@ function limitTo(max, value) {
 
 function numberBasedOnCost(cost, available)  {
   let items = 0;
-  if (0 < cost && cost < available) {
+  if ((0 < cost) && (cost <= available)) {
     items = Math.floor(available / cost);
   }
   return items;
 }
 
-function delayAfterExecute(delay, fcn) {
-  fcn();
-  if (delay > 0) {
-    Utilities.sleep(delay);
+function executeThenDelay(delay, targetFunc) {
+  targetFunc();
+  delay && Utilities.sleep(delay);
+}
+
+function repeat(n, targetFunc) {
+  if (n > 0) {
+    targetFunc();
+    --n;
+    repeat(n,targetFunc);
   }
 }
 
-function repeat(delay, n, fcn) {
-  if (n > 0) {
-    delayAfterExecute(delay, fcn);
-    repeat(delay,n-1,fcn);
-  }
-}

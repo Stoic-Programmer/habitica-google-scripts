@@ -20,8 +20,8 @@ function scheduleBulkBuyArmorie() {
   
   if (items > 0) {
     Logger.log("Calculated items to buy. required reserve="+RESERVE+", player gold="+gold+", itemCount="+items);
-    const purchaseArmorie  = function(){PLAYER.buyArmoire();};
-    const purchaseThenDelay = executeThenDelay(DELAY, purchaseArmorie);
+    const purchaseArmorie  = function() { return PLAYER.buyArmoire(); };
+    const purchaseThenDelay = function() { return executeThenDelay(DELAY, purchaseArmorie); };
     repeat(items, purchaseThenDelay);
   }
   else {

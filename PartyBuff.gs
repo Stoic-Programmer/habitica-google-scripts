@@ -42,6 +42,9 @@ function schedulePartyBuff() {
   const mana = Math.floor(PLAYER.stats().mp);
   const nBuffs = scaleToFiveMinutes(DELAY, numberBasedOnCost(skill.cost, mana));
   
+  const castBuff = function(){ return PLAYER.cast(skill.name); };
+  const castBuffAndDelay = function(){ return executeThenDelay(DELAY, castBuff); };
+  
   Logger.log("Casting, "+skill.description+", "+nBuffs+" times with available mana("+mana+")");
-  repeat(DELAY, nBuffs,function(){ PLAYER.cast(skill.name); });
+  repeat(nBuffs,castBuffAndDelay);
 }
