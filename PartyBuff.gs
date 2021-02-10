@@ -38,13 +38,15 @@ function schedulePartyBuff() {
   ];
 
   const skill = { name: "toolsOfTrade",  class : "Rogue", description: "Tools of the Trade", cost : 25, target: "Party",  level : 13, effect : "Party gains a buff to PER" };
-  const DELAY = rateLimit(2100); 
-  const mana = Math.floor(PLAYER.stats().mp);
-  const nBuffs = scaleToFiveMinutes(DELAY, numberBasedOnCost(skill.cost, mana));
   
+  const mana = Math.floor(PLAYER.stats().mp);
+  const nBuffs = numberBasedOnCost(skill.cost, mana);
+  
+  const now = new Date();
+  const stop = now.getMilliseconds() + 295000; // point we need to terminate.
   const castBuff = function(){ return PLAYER.cast(skill.name); };
-  const castBuffAndDelay = function(){ return executeThenDelay(DELAY, castBuff); };
+  const castBuffWithTimeLimit = function(){ return execute(stop, castBuff); };
   
   Logger.log("Casting, "+skill.description+", "+nBuffs+" times with available mana("+mana+")");
-  repeat(nBuffs,castBuffAndDelay);
+  repeatWithLimit(stop, nBuffs,castBuffWithTimeLimit);
 }

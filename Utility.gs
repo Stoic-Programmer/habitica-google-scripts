@@ -29,10 +29,10 @@ function limitTo(max, value) {
   if (max && (max < value)) {
     return max
   }
-  return value;  
+  return value;
 }
 
-function numberBasedOnCost(cost, available)  {
+function numberBasedOnCost(cost, available) {
   let items = 0;
   if ((0 < cost) && (cost <= available)) {
     items = Math.floor(available / cost);
@@ -45,11 +45,64 @@ function executeThenDelay(delay, targetFunc) {
   delay && Utilities.sleep(delay);
 }
 
+function execute(stop, targetFunc) {
+  let now = new Date();
+  if (stop > now.getMilliseconds()) {
+    targetFunc();
+  }
+}
+
 function repeat(n, targetFunc) {
   if (n > 0) {
     targetFunc();
     --n;
-    repeat(n,targetFunc);
+    repeat(n, targetFunc);
   }
+}
+
+function repeatWithLimit(stop, n, targetFunc) {
+  if (n > 0) {
+    targetFunc();
+    --n;
+    let now = new Date();
+    if (stop > now.getMilliseconds()) {
+      repeatWithLimit(stop, n, targetFunc);
+    }
+    else {
+      Logger.log("Reached runtime limits.  number remaining: " + n)
+    }
+  }
+}
+
+/**
+ * Fetches the ratelimit data from the response and puts
+ * it into an opbject for further processing.  The
+ * rate limit data tells us if we need to stop processing and
+ * wait a short bit before sending again.
+ */
+function buildHeader(response) {
+  if (response === undefined) {
+    return {
+      "limit": "",
+      "remain": "",
+      "resetTime": "",
+      "code": "",
+      "result": ""
+    };
+  }
+
+  let headers = response.getHeaders();
+  let content = JSON.parse(response);
+  let limit = headers['x-ratelimit-limit'];
+  let remain = headers['x-ratelimit-remaining'];
+  let resetTime = headers['x-ratelimit-reset'];
+  let code = response.getResponseCode();
+  return {
+    "limit": limit,
+    "remain": remain,
+    "resetTime": resetTime,
+    "code": code,
+    "result": content
+  };
 }
 
