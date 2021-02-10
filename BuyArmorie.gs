@@ -7,7 +7,6 @@
     so that there is always a bit of gold left on the account.
 */
 function scheduleBulkBuyArmorie() {
-  const DELAY = rateLimit(2100);
   const RESERVE = 30000;
   const MAX_ITEMS = 200;
   const PRICE = 100;
@@ -15,16 +14,19 @@ function scheduleBulkBuyArmorie() {
   let gold = Math.floor(PLAYER.stats().gp);
   let amount = gold - RESERVE;
 
-  let items = scaleToFiveMinutes(DELAY, numberBasedOnCost(PRICE, amount));
+  let items = numberBasedOnCost(PRICE, amount);
   items = limitTo(MAX_ITEMS, items);
-  
+
   if (items > 0) {
-    Logger.log("Calculated items to buy. required reserve="+RESERVE+", player gold="+gold+", itemCount="+items);
-    const purchaseArmorie  = function() { return PLAYER.buyArmoire(); };
-    const purchaseThenDelay = function() { return executeThenDelay(DELAY, purchaseArmorie); };
-    repeat(items, purchaseThenDelay);
+    const now = new Date();
+    const stop = now.getMilliseconds() + 295000; // point we need to terminate.
+
+    Logger.log("Calculated items to buy. required reserve=" + RESERVE + ", player gold=" + gold + ", itemCount=" + items);
+    const purchaseArmorie = function () { return PLAYER.buyArmoire(); };
+    const purchaseThenDelay = function () { return execute(stop, purchaseArmorie); };
+    repeatWithLimit(stop, items, purchaseThenDelay);
   }
   else {
-     Logger.log("Not enough reserve to buy.  reserve="+RESERVE+", player gold="+gold);
+    Logger.log("Not enough reserve to buy.  reserve=" + RESERVE + ", player gold=" + gold);
   }
 }
