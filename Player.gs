@@ -13,11 +13,11 @@ const PLAYER = (function () {
   let terminateTime;
 
   /**
- * Fetches the ratelimit data from the response and puts
- * it into an opbject for further processing.  The
- * rate limit data tells us if we need to stop processing and
- * wait a short bit before sending again.
- */
+   * Fetches the ratelimit data from the response and puts
+   * it into an opbject for further processing.  The
+   * rate limit data tells us if we need to stop processing and
+   * wait a short bit before sending again.
+   */
   function buildHeader(response) {
     if (response === undefined) {
       return {
@@ -68,9 +68,9 @@ const PLAYER = (function () {
       let delay = header.wakeup.getTime() - now.getTime() + 1000;
       let target = new Date(now.getTime() + delay);
 
-      if (terminateTime === undefined || target.getTime() < terminateTime.getTime()) {
-         delay = terminateTime - now.getTime() - 500;
-         console.warn("Shortening the delay time since we might overrun the Google clock if we delay too long.");
+      if (terminateTime !== undefined && target.getTime() > terminateTime.getTime()) {
+        delay = terminateTime - now.getTime() - 500;
+        console.warn("Shortening the delay time since we might overrun the Google clock if we delay too long.");
       }
       console.warn("Reached rate limit.  Pausing for : " + delay + "ms, wakeup @ " + header.wakeup);
       Utilities.sleep(delay);
