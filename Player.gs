@@ -10,6 +10,40 @@ const PLAYER = (function () {
   const AUTHOR_ID = "ebded617-5b88-4f67-9775-6c89ac45014f"; // Rafton on Habitica
 
   let lastResponse;
+  let terminateTime;
+
+  /**
+ * Fetches the ratelimit data from the response and puts
+ * it into an opbject for further processing.  The
+ * rate limit data tells us if we need to stop processing and
+ * wait a short bit before sending again.
+ */
+  function buildHeader(response) {
+    if (response === undefined) {
+      return {
+        "limit": "",
+        "remain": "",
+        "wakeup": "",
+        "code": "",
+        "data": ""
+      };
+    }
+
+    let headers = response.getHeaders();
+    let content = JSON.parse(response);
+    let limit = headers['x-ratelimit-limit'];
+    let remain = headers['x-ratelimit-remaining'];
+    let wakeupTime = headers['x-ratelimit-reset'];
+    let code = response.getResponseCode();
+    let wakeupDate = new Date(wakeupTime);
+    return {
+      "limit": limit,
+      "remain": remain,
+      "wakeup": wakeupDate,
+      "code": code,
+      "data": content
+    };
+  }
 
   const HEADERS = {
     "x-client": AUTHOR_ID + "-PartyBuff_or_BuyArmorie",
@@ -29,12 +63,19 @@ const PLAYER = (function () {
    */
   function processResponse(response) {
     header = buildHeader(response);
-    if (header.remaining <= 1) {
-      console.warn("Reached rate limit.  Pausing until: " + header.reset);
+    if (header.remain < 1) {
       let now = new Date();
-      let delay = header.reset.getMilliseconds() - now.getMilliseconds() + 2000;
+      let delay = header.wakeup.getTime() - now.getTime() + 1000;
+      let target = new Date(now.getTime() + delay);
+
+      if (terminateTime === undefined || target.getTime() < terminateTime.getTime()) {
+         delay = terminateTime - now.getTime() - 500;
+         console.warn("Shortening the delay time since we might overrun the Google clock if we delay too long.");
+      }
+      console.warn("Reached rate limit.  Pausing for : " + delay + "ms, wakeup @ " + header.wakeup);
       Utilities.sleep(delay);
     }
+    return header
   }
 
   function callHabitica(url, request) {
@@ -68,22 +109,25 @@ const PLAYER = (function () {
     buyArmoire: function () {
       let response = purchaseArmorie();
       let result = JSON.parse(response);
-
-      if (result.data.armoire.type === "food") {
-        Logger.log("You gained " + result.data.armoire.dropText + ".")
-      } else {
-        Logger.log("You gained " + result.data.armoire.value + " " + result.data.armoire.type + ".")
-      }
+      //      if (result.data.armoire.type === "food") {
+      //        console.info("You gained " + result.data.armoire.dropText + ". ");
+      //      } else {
+      //        console.info("You gained " + result.data.armoire.value + " " + result.data.armoire.type + ".");
+      //      }
+      return response;
     },
 
     cast: function (skill) {
       let response = castSkill(skill);
-
       return response;
     },
 
     rateLimits: function () {
       return buildHeader(lastResponse);
+    },
+
+    setTerminateTime: function (end) {
+      terminateTime = end;
     }
   }
 }());
@@ -91,9 +135,9 @@ const PLAYER = (function () {
 
 function testUserStats() {
   let limits = PLAYER.rateLimits();
-  Logger.log("code=" + limits.code + ", limit=" + limits.limit + ", remain=" + limits.remain + ", resetTime=" + limits.untilReset);
+  console.log("code=" + limits.code + ", limit=" + limits.limit + ", remain=" + limits.remain + ", resetTime=" + limits.wakeup);
 
   let response = PLAYER.stats();
   limits = PLAYER.rateLimits();
-  Logger.log("code=" + limits.code + ", limit=" + limits.limit + ", remain=" + limits.remain + ", resetTime=" + limits.untilReset);
+  console.log("code=" + limits.code + ", limit=" + limits.limit + ", remain=" + limits.remain + ", resetTime=" + limits.wakeup);
 }
