@@ -7,7 +7,7 @@
     so that there is always a bit of gold left on the account.
 */
 function scheduleBulkBuyArmorie() {
-  const RESERVE = 30000;
+  const RESERVE = 100000;
   const PRICE = 100;
 
   let gold = Math.floor(PLAYER.stats().gp);
@@ -20,12 +20,12 @@ function scheduleBulkBuyArmorie() {
     end.setTime(stop);
 
     PLAYER.setTerminateTime(end);
-    console.log("Buy Armorie. required reserve=" + RESERVE + ", player gold=" + gold + ", items=" + items +", timeLimit="+end);
+    console.info("Buy Armorie. reserve=" + RESERVE + ", player gold=" + gold + ", items=" + items +", timeLimit="+end);
     const purchaseArmorie = function () { return PLAYER.buyArmoire(); };
     const purchaseThenDelay = function () { return execute(stop, purchaseArmorie); };
     repeatWithLimit(stop, items, purchaseThenDelay);
   }
   else {
-    console.log("Not enough reserve to buy.  reserve=" + RESERVE + ", player gold=" + gold);
+    console.warn("Not enough reserve to buy.  reserve=" + RESERVE + ", player gold=" + gold);
   }
 }
