@@ -101,12 +101,6 @@ const PLAYER = (function () {
 
     buyArmoire: function () {
       let response = purchaseArmorie();
-      let result = JSON.parse(response);
-      if (result.data.armoire.type === "food") {
-        console.info("You gained " + result.data.armoire.dropText + ". ");
-      } else {
-        console.info("You gained " + result.data.armoire.value + " " + result.data.armoire.type + ".");
-      }
       return response;
     },
 
