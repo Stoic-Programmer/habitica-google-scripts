@@ -29,3 +29,11 @@ function testRepeatWithDelay() {
   console.log("Ending Test..." + new Date());
 }
 
+function testUserStats() {
+  let limits = PLAYER.rateLimits();
+  console.log("code=" + limits.code + ", limit=" + limits.limit + ", remain=" + limits.remain + ", resetTime=" + limits.wakeup);
+
+  let response = PLAYER.stats();
+  limits = PLAYER.rateLimits();
+  console.log("code=" + limits.code + ", limit=" + limits.limit + ", remain=" + limits.remain + ", resetTime=" + limits.wakeup);
+}

@@ -41,15 +41,11 @@ function schedulePartyBuff() {
 
   const mana = Math.floor(PLAYER.stats().mp);
   const nBuffs = numberBasedOnCost(skill.cost, mana);
+  const end = futureMillisFromNow(295000);
 
-  const end = new Date();
-  const stop = end.getTime() + 290000;
-  end.setTime(stop);
-
-  PLAYER.setTerminateTime(end);
   const castBuff = function () { return PLAYER.cast(skill.name); };
   const castBuffWithTimeLimit = function () { return execute(stop, castBuff); };
 
   console.info("Casting, " + skill.description + ", " + nBuffs + " times with available mana(" + mana + "), timeLimit=" + end);
-  repeatWithLimit(stop, nBuffs, castBuffWithTimeLimit);
+  repeatWithLimit(end, nBuffs, castBuffWithTimeLimit);
 }

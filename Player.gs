@@ -10,7 +10,6 @@ const PLAYER = (function () {
   const AUTHOR_ID = "ebded617-5b88-4f67-9775-6c89ac45014f"; // Rafton on Habitica
 
   let lastResponse;
-  let terminateTime;
 
   /**
    * Fetches the ratelimit data from the response and puts
@@ -66,12 +65,6 @@ const PLAYER = (function () {
     if (header.remain < 1) {
       let now = new Date();
       let delay = header.wakeup.getTime() - now.getTime() + 1000;
-      let target = new Date(now.getTime() + delay);
-
-//      if (terminateTime !== undefined && target.getTime() > terminateTime.getTime()) {
-//        delay = terminateTime - now.getTime();
-//        console.warn("Shortening the delay time since we might overrun the Google clock if we delay too long.");
-//      }
       console.warn("Reached rate limit.  Pausing for : " + delay + "ms, wakeup @ " + header.wakeup);
       Utilities.sleep(delay);
     }
@@ -109,11 +102,11 @@ const PLAYER = (function () {
     buyArmoire: function () {
       let response = purchaseArmorie();
       let result = JSON.parse(response);
-      //      if (result.data.armoire.type === "food") {
-      //        console.info("You gained " + result.data.armoire.dropText + ". ");
-      //      } else {
-      //        console.info("You gained " + result.data.armoire.value + " " + result.data.armoire.type + ".");
-      //      }
+      if (result.data.armoire.type === "food") {
+        console.info("You gained " + result.data.armoire.dropText + ". ");
+      } else {
+        console.info("You gained " + result.data.armoire.value + " " + result.data.armoire.type + ".");
+      }
       return response;
     },
 
@@ -124,20 +117,6 @@ const PLAYER = (function () {
 
     rateLimits: function () {
       return buildHeader(lastResponse);
-    },
-
-    setTerminateTime: function (end) {
-      terminateTime = end;
     }
   }
 }());
-
-
-function testUserStats() {
-  let limits = PLAYER.rateLimits();
-  console.log("code=" + limits.code + ", limit=" + limits.limit + ", remain=" + limits.remain + ", resetTime=" + limits.wakeup);
-
-  let response = PLAYER.stats();
-  limits = PLAYER.rateLimits();
-  console.log("code=" + limits.code + ", limit=" + limits.limit + ", remain=" + limits.remain + ", resetTime=" + limits.wakeup);
-}
