@@ -5,7 +5,7 @@ A collection of scripts used for the online habit tracking tool, Habitica.
 
 [Habitica has a public API](https://habitica.com/apidoc/) that allows players to automate some of the activities surounding the game/application.  This is my collection of scripts that are run on the Goolge App Scripts platform.
 
-I create one Google Apps Scripts "Project" that I called "Habitica" and dumped all my scripts I use for habitica into there.  Most of the scripts or ideas for the scripts originated from a collection of [Google Apps Scripts](https://habitica.fandom.com/wiki/Google_Apps_Script) available on the Habitica wiki. I am in the process of streamlining the scripts to work better for my purposes as a Habitica user.
+I create one Google Apps Scripts "Project" that I called "Habitica" and dumped all my scripts I use for habitica into there.  Most of the scripts or ideas for the scripts originated from a collection of [Google Apps Scripts](https://habitica.fandom.com/wiki/Google_Apps_Script) available on the Habitica wiki. I am in the process of streamlining the scripts to work better for my purposes as a Habitica user. To make life a bit easier I use the chrome extension [GasHub (Google Apps Script GitHub Assistant)](http://gas.a4114.net/) which allows me to pull GitHub projects firectly into a Google Script project and push updates as I go.
 
 To make it work on Google Apps Scripts you will need to edit the Project Properties and add properties under the "Script Properties" tab:
 - _appURL_ : The google script published web app URL.  This is the web hook that Habitica will call.  AutoQuest.qs has instrictions on setup.
