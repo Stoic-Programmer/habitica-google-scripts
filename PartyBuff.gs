@@ -44,7 +44,7 @@ function schedulePartyBuff() {
   const end = futureMillisFromNow(295000);
 
   const castBuff = function () { return PLAYER.cast(skill.name); };
-  const castBuffWithTimeLimit = function () { return execute(stop, castBuff); };
+  const castBuffWithTimeLimit = function () { return execute(end, castBuff); };
 
   console.info("Casting, " + skill.description + ", " + nBuffs + " times with available mana(" + mana + "), timeLimit=" + end);
   repeatWithLimit(end, nBuffs, castBuffWithTimeLimit);
