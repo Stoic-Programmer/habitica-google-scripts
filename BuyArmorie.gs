@@ -8,7 +8,7 @@
 */
 function scheduleBulkBuyArmorie() {
   const TIMEOUT = 295000; // Google scripts limits the amount of time a cript is allowed to run.
-  const RESERVE = 100000; // The amount of Gold we want to keep in our bank.
+  const RESERVE = 3000; // The amount of Gold we want to keep in our bank.
   const PRICE = 100; // The price in gold of each armorie.
 
   let gold = Math.floor(PLAYER.stats().gp);

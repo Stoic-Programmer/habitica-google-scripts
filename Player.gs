@@ -92,6 +92,15 @@ const PLAYER = (function () {
     return callHabitica(url, request("post"));
   }
 
+  /**
+ * Get the information about the active quest for the current party.
+ */
+  function queryQuest() {
+    // Retrieve info about the current party quest.
+    var url = "https://habitica.com/api/v3/groups/party";
+    return callHabitica(url, request(get));
+  }
+
   return {
     stats: function () {
       let response = queryUser();
@@ -111,6 +120,10 @@ const PLAYER = (function () {
 
     rateLimits: function () {
       return buildHeader(lastResponse);
+    },
+
+    quest : function() {
+      return queryQuest();
     }
   }
 }());
